@@ -21,6 +21,8 @@ different enough to undo all I picked up.)
     * SML-like syntax sugared `cond` that should do pattern matching too somewhere in the future.
   * `(lazar basic-syntax)`
     * math / Coq / Haskell-inspired notation for some miscellaneous functions and macros.
+  * `(lazar cxr)`
+    * `cadadr`-style abbreviations to `hd` and `tl` format (ie. `h:hd` => `caar`)
   * `(lazar contracts)`
     * SML-inspired rework of *Linus Björnstam*'s contracts for function definition.
 
@@ -29,8 +31,8 @@ different enough to undo all I picked up.)
 ```scheme
 car    := hd
 cdr    := tl
-cadr   := h.tl
-cddaar := t.t.h.hd
+cadr   := h:tl
+cadar  := h:t:hd
 
 cons   := ::
 cons*  := ::*
