@@ -1,3 +1,4 @@
+;;;; -*- geiser-scheme-implementation: guile -*-
 (library (lazar cxr)
   (export h:hd
           h:tl

@@ -1,3 +1,4 @@
+;;;; -*- geiser-scheme-implementation: guile -*-
 (library (lazar est)
   (export rec in ε est)
   (import (rnrs (6)))

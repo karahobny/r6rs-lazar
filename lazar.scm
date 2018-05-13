@@ -1,11 +1,11 @@
 (library (lazar (0 1))
   (export
     ;; aux keywords
-    => .. || else rec in : ->
+    =>> || rec in : ->
     ;; lambda, case-with and est
-    λ λ.=> ε est case-with
+    λ λ=> ε est case-with
     ;; types / contracts
-    Pair ListOf Vec VecOf
+    Pair List ListOf Vec VecOf
     Fn Bool Symbol Char Str Num
     Natural natural? Int Real
     Rational Complex Any a'

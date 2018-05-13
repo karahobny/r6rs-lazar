@@ -1,3 +1,4 @@
+;; -*- geiser-scheme-implementation: guile -*-
 ;; Copyright 2017, 2018 Linus Björnstam
 ;; This Source Code Form is subject to the terms of the Mozilla Public
 ;; License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,10 +10,13 @@
 ;;https://bitbucket.org/bjoli/nietzsche/src/1769998a800955d5831aa7c0c8b3c31ba00f7050/syntax/contract.scm?at=default&fileviewer=file-view-default
 
 (library (lazar contracts)
-  (export Pair ListOf Vec VecOf
-          Fn Bool Symbol Char Str Num Natural
-          natural? Int Real Rational Complex Any
-          a' α ℕ ℤ ℝ ℚ ℂ : -> define/c)
+  (export : ->
+          Pair List ListOf Vec VecOf
+          Fn Bool Symbol Char Str natural?
+          Num Natural Int Real Rational Complex
+          ℕ ℤ ℝ ℚ ℂ
+          Any a' α
+          define/c)
   (import (rnrs (6))
           (lazar case-with)
           (lazar fn-lambda)
@@ -22,23 +26,23 @@
   (define Every
     (λ p xs =>
        (let loop ((xs xs))
-         (case-of || (Ø? xs)     => ⊤
-                  || (p (hd xs)) => (loop (tl xs))
-                  || else        => ⊥))))
+         (case-with || (Ø? xs)     => ⊤
+                    || (p (hd xs)) => (loop (tl xs))
+                    || _           => ⊥))))
 
   (define (Or . preds)
     (λ x =>
        (let loop ((preds preds))
          (case-with || (Ø? preds) => ⊥
                     || (hd preds) => x
-                    || else       => (loop (tl preds))))))
+                    || _          => (loop (tl preds))))))
 
   (define Pair pair?)
   (define List list?)
   (define (ListOf p)
     (λ x =>
        (case-with || (List x) => (Every p x)
-                  || else     => ⊥)))
+                  || _        => ⊥)))
 
   (define Vec vector?)
   (define (VecOf p)
@@ -47,7 +51,7 @@
           (let loop ((i 0))
             (case-with || (= i len)            => ⊤
                        || (p (vector-ref x i)) => (loop (∆ i))
-                       || else                 => ⊥)))))
+                       || _                    => ⊥)))))
 
   (define Fn   procedure?)
   (define Bool boolean?)
@@ -80,13 +84,11 @@
   (define (a'  x) ⊤)
   (define (α   x) ⊤)
 
-  (define-syntax-parameter :
-    (lambda (stx)
-      (syntax-violation ': ": used outside of contract definition." stx)))
+  (define-syntax :
+    (identifier-syntax (syntax-violation #f "misplaced aux keyword" #':)))
 
   (define-syntax ->
-    (lambda (x)
-      (syntax-violation #f "misplaced aux keyword" x)))
+    (identifier-syntax (syntax-violation #f "misplaced aux keyword" #'->)))
 
   (define-syntax define/c
     (syntax-rules (: ->)
@@ -97,8 +99,8 @@
          (unless (pred? var) (error 'define/contract "contract error")) ...
          (let ((%return-value (%INTERNAL_PROC)))
            (if (return-pred? %return-value)
-               %return-value
-               (error 'define/contract "contract error")))))
+             %return-value
+             (error 'define/contract "contract error")))))
       ((_ (id (var : pred?) -> return-pred?) body ...)
        (define (id var)
          (define (%INTERNAL_PROC)
@@ -107,5 +109,5 @@
            (error 'define/contract "contract error"))
          (let ((%return-value (%INTERNAL_PROC)))
            (if (return-pred? %return-value)
-               %return-value
-               (error 'define/contract "contract error"))))))))
+             %return-value
+             (error 'define/contract "contract error"))))))))
