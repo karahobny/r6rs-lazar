@@ -31,8 +31,8 @@ different enough to undo all I picked up.)
 ```scheme
 car    := hd
 cdr    := tl
-cadr   := h.tl
-cddaar := t.t.h.hd
+cadr   := h:tl
+cadar  := h:t:hd
 
 cons   := ::
 cons*  := ::*
