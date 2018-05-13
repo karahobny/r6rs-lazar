@@ -1,40 +1,17 @@
+;;;; -*- geiser-scheme-implementation: guile -*-
 (library (lazar basic-syntax)
-  (export <$>
-          hd
-          tl
-          ::
-          ::*
-          true
-          ⊤
-          false
-          ⊥
-          /\
-          ∧
-          ⋀
-          \/
-          ∨
-          ⋁
-          ¬
-          /=
-          ≬
+  (export <$> hd tl :: ::*
+          true ⊤ false ⊥
+          /\ ∧ ⋀
+          \/ ∨ ⋁
+          ¬ ~ /= ≬
           between?
-          ⊼
-          ⊽
-          nand
-          nor
-          null
-          Ø
-          Ø?
-          ¬Ø
-          inc
-          dec
-          ∆
-          ∇
-          0?
-          1?
-          if-not
-          if-let
-          when-let)
+          ⊼ ⊽
+          nand nor
+          null Ø Ø? ¬Ø
+          inc dec ∆ ∇
+          0? 1?
+          if-not if-let when-let)
   (import (rnrs (6))
           (lazar case-with)
           (lazar est)
@@ -88,6 +65,10 @@
 
   ;; unicode logical symbol 'not' (U00AC)
   (define-syntax ¬
+    (syntax-rules ()
+      ((_ . x) (not . x))))
+
+  (define-syntax ~
     (syntax-rules ()
       ((_ . x) (not . x))))
 

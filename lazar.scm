@@ -13,7 +13,7 @@
    ;; other syntax
    <$> hd tl :: ::*
    true ⊤ false ⊥
-   /\ ∧ ⋀ \/ ∨ ⋁ ¬
+   /\ ∧ ⋀ \/ ∨ ⋁ ¬ ~
    /= ≬ between? ⊼ ⊽
    nand nor null Ø Ø?
    ¬Ø inc dec ∆ ∇ 0? 1?
