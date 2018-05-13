@@ -2,6 +2,8 @@
 
 #### Toy library for R6RS Scheme
 
+[Code examples shown here](https://gist.github.com/karahobny/8f97d25c1a3f81390b54806ec070cc38)
+
 ## Overview
 Mostly fiddling around trying to learn the ropes, but I have a soft spot
 for this kind of syntax, so I'll be probably rolling it in any of my real
