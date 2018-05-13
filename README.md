@@ -12,12 +12,17 @@ create libraries (I know the `R7RS` lib spec is a bit different, but not
 different enough to undo all I picked up.)
 
 ## Libraries
-* `(lazar)` : overall library
-    * `(lazar fn-lambda)` : SML-reminiscient anonymous `(lambda)` function.
-    * `(lazar est)` : OCaml-like `let` / `let rec`-syntax for `let*` / `letrec*`
-    * `(lazar case-with)` : SML-like syntax sugared `cond` that should do pattern matching too somewhere in the future.
-    * `(lazar basic-syntax)` : math-notation / Coq / Haskell-inspired notation for some miscellaneous functions and macros.
-    * `(lazar contracts)` : SML-inspired rework of *Linus Björnstam*'s contracts for function definition.
+* `(lazar)`
+  * `(lazar fn-lambda)` 
+    * SML-reminiscient anonymous `(lambda)` function.
+  * `(lazar est)`
+    * OCaml-like `let` / `let rec`-syntax for `let*` / `letrec*`
+  * `(lazar case-with)`
+    * SML-like syntax sugared `cond` that should do pattern matching too somewhere in the future.
+  * `(lazar basic-syntax)`
+    * math / Coq / Haskell-inspired notation for some miscellaneous functions and macros.
+  * `(lazar contracts)`
+    * SML-inspired rework of *Linus Björnstam*'s contracts for function definition.
 
 ## "Features"
 * SML-like syntax
@@ -49,27 +54,26 @@ not := ¬
 ```scheme
 (define/c (<proc-name> ((<param> : <type>) ...) -> <return-type>) body ... )
 ```
-
-    * and for single parameter/variable-cases:
-    ```scheme
-    (define/c (<proc-name> (<param> : <type>) -> <return-type>) body ... )
-    ```
+* and for single parameter/variable-cases:
+```scheme
+(define/c (<proc-name> (<param> : <type>) -> <return-type>) body ... )
+```
 
 * Types to contract include at the very least:
-    * any boolean (easy to construct your own type). Example of this seen below
-    * `ListOf` x
-    * `VecOf`  x
-    * `Any`, a', α
+  * any boolean (easy to construct your own type). Example of this seen below.
+  * `ListOf` x
+  * `VecOf`  x
+  * `Any`, a', α
     * *etc.*
 
-    * Defining new contract/type/predicate:
-    ```scheme
-    (define (Natural n)
-      (and (exact? n) (ℤ n) (>= n 0)))
-    ```
+  * Defining new contract/type/predicate:
+```scheme
+(define (Natural n)
+  (and (exact? n) (ℤ n) (>= n 0)))
+```
 
-* sugared cond, much like the one found in Standard ML
-    * *nb.* `=>` is purely sugar and `case-with` functions just as well without it.
+* sugared cond, much like the one found in Standard ML.
+  * *nb.* `=>` is purely sugar and `case-with` functions just as well without it.
 ```scheme
 (case-with || <clause> => <expr>
            || <clause> => <expr> ...
@@ -95,7 +99,8 @@ not := ¬
 
 ```
 
-* `est` / `ε` works like a quick let* and letrec*-closure. `rec` marking the following definition as a recursable from the closure.
+* `est` / `ε` works like a quick let* and letrec*-closure. 
+  * `rec` marking the following definition as a recursable from the closure.
 ```scheme
 (define/c (rev (xs : List) -> List)
   (ε rec aux
@@ -104,6 +109,8 @@ not := ¬
                    || else   => (aux (tl x) (:: (hd x) y))))
      in (aux xs Ø)))
 ```
+
+> Funnily enough Emacs handles indentation of all this relatively well
 
 #### Thanks to
 **[r/scheme](https://www.reddit.com/r/scheme/)**
