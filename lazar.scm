@@ -1,13 +1,9 @@
-(library (lazar)
+(library (lazar (0 1))
   (export
-   ;; aux keywords λ.=> est ε case-with)
-   => ..
-   || else rec in
-   : ->
-   ;; syntax
-   λ λ.=>
-   ε est
-   case-with
+   ;; aux keywords
+   => .. || else rec in : ->
+   ;; lambda, case-with and est
+   λ λ.=> ε est case-with
    ;; types / contracts
    Pair ListOf Vec VecOf
    Fn Bool Symbol Char Str Num

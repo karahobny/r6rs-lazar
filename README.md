@@ -2,6 +2,15 @@
 
 #### Toy library for R6RS Scheme
 
+## Overview
+Mostly fiddling around trying to learn the ropes, but I have a soft spot
+for this kind of syntax, so I'll be probably rolling it in any of my real
+projects, if I ever get to them.
+
+So, purely for fucking around and teaching myself how to handle macros,
+create libraries (I know the `R7RS` lib spec is a bit different, but not
+different enough to undo all I picked up.)
+
 ## "Features"
 
 * SML-like syntax
