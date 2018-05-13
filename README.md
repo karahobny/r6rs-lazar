@@ -11,10 +11,16 @@ So, purely for fucking around and teaching myself how to handle macros,
 create libraries (I know the `R7RS` lib spec is a bit different, but not
 different enough to undo all I picked up.)
 
+## Libraries
+* `(lazar)` : overall library
+    * `(lazar fn-lambda)` : SML-reminiscient anonymous `(lambda)` function.
+    * `(lazar est)` : OCaml-like `let` / `let rec`-syntax for `let*` / `letrec*`
+    * `(lazar case-with)` : SML-like syntax sugared `cond` that should do pattern matching too somewhere in the future.
+    * `(lazar basic-syntax)` : math-notation / Coq / Haskell-inspired notation for some miscellaneous functions and macros.
+    * `(lazar contracts)` : SML-inspired rework of *Linus Björnstam*'s contracts for function definition.
+
 ## "Features"
-
 * SML-like syntax
-
 ```scheme
 car    := hd
 cdr    := tl
@@ -26,7 +32,6 @@ cons*  := ::*
 ```
 
 * unicode logic symbols, and some of their ascii equivalents to use
-
 ```scheme
 #t  := ⊤, true
 #f  := ⊥, false
@@ -40,35 +45,38 @@ not := ¬
 (not '()) := ¬Ø
 ```
 
-* define with contracts
-
+* define with contracts (with `define/c`)
 ```scheme
 (define/c (<proc-name> ((<param> : <type>) ...) -> <return-type>) body ... )
 ```
 
-* `define/c` for single parameter/variable-cases:
+    * and for single parameter/variable-cases:
+    ```scheme
+    (define/c (<proc-name> (<param> : <type>) -> <return-type>) body ... )
+    ```
 
-```scheme
-(define/c (<proc-name> (<param> : <type>) -> <return-type>) body ... )
-```
-
-* Types to contract include:
-    * any boolean (easy to construct your own type).
+* Types to contract include at the very least:
+    * any boolean (easy to construct your own type). Example of this seen below
     * `ListOf` x
     * `VecOf`  x
     * `Any`, a', α
     * *etc.*
 
-* sugared cond, much like the one found in Standard ML
+    * Defining new contract/type/predicate:
+    ```scheme
+    (define (Natural n)
+      (and (exact? n) (ℤ n) (>= n 0)))
+    ```
 
+* sugared cond, much like the one found in Standard ML
+    * *nb.* `=>` is purely sugar and `case-with` functions just as well without it.
 ```scheme
 (case-with || <clause> => <expr>
            || <clause> => <expr> ...
            || else     => <expr>)
 ```
 
-* *nb.* `=>` is purely sugar and `case-with` functions just as well without it.
-
+* Example of `define/c` and `case-with` on a Little Schemer -fame function:
 ```scheme
 (define/c (rember ((x : α) (ys : List)) -> List)
   (case-with || (Ø? ys)       => Ø
@@ -76,8 +84,8 @@ not := ¬
              || else          => (:: (hd ys) (rember x (tl ys)))))
 ```
 
-* SML-inspired lambda notation. Without the auxilliary `=>`, it handles one variable, marked with underscore.
-
+* SML-inspired lambda notation.
+    * Without the auxilliary `=>`, it handles one variable, marked with underscore.
 ```scheme
 ((λ x y z => (+ x y z)) 20 19 3)
 
@@ -87,8 +95,7 @@ not := ¬
 
 ```
 
-* `est` / `ε` works like a quick let* and letrec*-closure.
-
+* `est` / `ε` works like a quick let* and letrec*-closure. `rec` marking the following definition as a recursable from the closure.
 ```scheme
 (define/c (rev (xs : List) -> List)
   (ε rec aux
