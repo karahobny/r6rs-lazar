@@ -11,7 +11,8 @@
           null Ø Ø? ¬Ø
           inc dec ∆ ∇
           0? 1?
-          if-not if-let when-let)
+          if-not if-let when-let
+          Y)
   (import (rnrs (6))
           (lazar case-with)
           (lazar est)
@@ -128,3 +129,7 @@
   (define-syntax when-let
     (syntax-rules ()
       ((_ (x y) e ...) (let ((x y)) (when x e ...))))))
+
+;; y-combinator
+(define Y
+  (λ f => ((λ (_ _)) (λ (f (λ a =>> (<$> (_ _) a)))))))

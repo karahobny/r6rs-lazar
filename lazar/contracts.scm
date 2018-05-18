@@ -14,21 +14,19 @@
           Pair List ListOf Vec VecOf
           Fn Bool Symbol Char Str natural?
           Num Natural Int Real Rational Complex
-          ℕ ℤ ℝ ℚ ℂ
-          Any a' α
-          define/c)
+          ℕ ℤ ℝ ℚ ℂ Any a' α define/c)
   (import (rnrs (6))
+          (lazar est)
           (lazar case-with)
           (lazar fn-lambda)
-          (lazar est)
           (lazar basic-syntax))
 
-  (define Every
-    (λ p xs =>
-       (let loop ((xs xs))
-         (case-with || (Ø? xs)     => ⊤
-                    || (p (hd xs)) => (loop (tl xs))
-                    || _           => ⊥))))
+  (define (Every p xs)
+    (ε rec aux (λ p xs =>
+                  (case-with || (Ø? xs)     => ⊤
+                             || (p (hd xs)) => (aux p (tl xs))
+                             || _           => ⊥))
+       in (aux p xs)))
 
   (define (Or . preds)
     (λ x =>
@@ -94,20 +92,19 @@
     (syntax-rules (: ->)
       ((_ (id ((var : pred?) ...) -> return-pred?) body ...)
        (define (id var ...)
-         (define (%INTERNAL_PROC)
+         (define (id var ...)
            body ...)
-         (unless (pred? var) (error 'define/contract "contract error")) ...
-         (let ((%return-value (%INTERNAL_PROC)))
+         (unless (pred? var) (error 'define/c "contract error")) ...
+         (let ([%return-value (id var ...)])
            (if (return-pred? %return-value)
-             %return-value
-             (error 'define/contract "contract error")))))
+               %return-value
+               (error 'define/c "contract error")))))
       ((_ (id (var : pred?) -> return-pred?) body ...)
        (define (id var)
-         (define (%INTERNAL_PROC)
+         (define (id var)
            body ...)
-         (unless (pred? var)
-           (error 'define/contract "contract error"))
-         (let ((%return-value (%INTERNAL_PROC)))
+         (unless (pred? var) (error 'define/c "contract error"))
+         (let ((%return-value (id var)))
            (if (return-pred? %return-value)
-             %return-value
-             (error 'define/contract "contract error"))))))))
+               %return-value
+               (error 'define/c "contract error"))))))))

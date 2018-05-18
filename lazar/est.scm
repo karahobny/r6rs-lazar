@@ -3,7 +3,6 @@
   (export rec in ε est)
   (import (rnrs (6)))
 
-
 ;;;; *** let ***
 
   ;; Example:
@@ -32,7 +31,7 @@
       ((_ rec x y in e ...) ((lambda ()  (define x y)  e ...)))
       ((_ rec x y    r ...) ((lambda ()  (define x y)  (ε r ...))))
       ;; let* equivalent
-      ((_     x y in e ...) ((lambda (x) e ...)        y))
+      ((_     x y in e ...) ((lambda (x) e ...)      y))
       ((_     x y    r ...) ((lambda (x) (ε r ...))  y))))
 
   (define-syntax est
